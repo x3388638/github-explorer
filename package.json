@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon",
-    "build": "webpack"
+    "start": "npm run build && nodemon",
+    "build": "webpack",
+    "lint": "eslint './**/*.js'",
+    "lint:fix": "eslint './**/*.js' --fix",
+    "prettier:check": "prettier --check './**/*.{js,json,css}'",
+    "prettier:write": "prettier --write './**/*.{js,json,css}'"
   },
   "author": "",
   "license": "ISC",
@@ -21,9 +25,23 @@
     "@babel/preset-react": "^7.10.1",
     "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
+    "eslint": "^7.2.0",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.4",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.9",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
+  },
+  "lint-staged": {
+    "*.{js,json,css}": "npm run prettier:check",
+    "*.js": "npm run lint"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
