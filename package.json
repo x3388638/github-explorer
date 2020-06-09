@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm run build && nodemon",
     "build": "webpack",
+    "build:dev": "webpack --watch",
     "lint": "eslint './**/*.js'",
     "lint:fix": "eslint './**/*.js' --fix",
     "prettier:check": "prettier --check './**/*.{js,json,css}'",
@@ -15,8 +16,10 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "history": "^4.10.1",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
