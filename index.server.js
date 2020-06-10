@@ -1,14 +1,25 @@
 import express from 'express'
+// import fetch from 'isomorphic-fetch'
+import cors from 'cors'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { ServerStyleSheet } from 'styled-components'
 import { Html } from './src/template'
 import App from './src/App'
+import mockData from './server/mock/searchRepos.json'
+import { RepoListNormailzer } from './server/normalizer/repoNormalizer'
 
+const PORT = process.env.PORT || '8080'
 const app = express()
 
 app.use(express.static('dist'))
+
+app.get('/search/repos/:keyword', cors(), (req, res) => {
+  setTimeout(() => {
+    res.json(RepoListNormailzer(mockData))
+  }, 2000)
+})
 
 app.get('/:keyword?', (req, res) => {
   const { keyword } = req.params
@@ -34,6 +45,6 @@ app.get('*', (req, res) => {
   res.status('404').send('Not found.')
 })
 
-app.listen('8080', () => {
-  console.log('server start')
+app.listen(PORT, () => {
+  console.log(`Server started: http://localhost:${PORT}`)
 })

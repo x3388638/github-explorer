@@ -101,7 +101,7 @@ const RepoItem = ({
   lang,
   license,
   lastUpdate,
-  issues,
+  issue,
   url
 }) => {
   return (
@@ -122,11 +122,15 @@ const RepoItem = ({
         ))}
       </Topics>
       <Detail>
-        <span>★ {star > 999 ? `${(star / 1000).toPrecision(3)}k` : star}</span>
-        <span>{lang}</span>
-        <span>{license}</span>
+        {star > 0 && (
+          <span>
+            ★ {star > 999 ? `${(star / 1000).toPrecision(3)}k` : star}
+          </span>
+        )}
+        {lang && <span>{lang}</span>}
+        {license && <span>{license}</span>}
         <span>Updated {rf.format(new Date(lastUpdate), 'second')}</span>
-        <span>{issues} issues</span>
+        {issue > 0 && <span>{issue} issue</span>}
       </Detail>
     </Container>
   )
@@ -144,13 +148,13 @@ RepoItem.propTypes = {
   // repo star count
   star: PropTypes.number.isRequired,
   // repo language
-  lang: PropTypes.string.isRequired,
+  lang: PropTypes.string,
   // repo license
-  license: PropTypes.string.isRequired,
+  license: PropTypes.string,
   // repo last update time
   lastUpdate: PropTypes.string.isRequired,
   // repo issue count
-  issues: PropTypes.number.isRequired,
+  issue: PropTypes.number.isRequired,
   // repo link
   url: PropTypes.string.isRequired
 }

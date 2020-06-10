@@ -1,5 +1,14 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
+import debounce from 'lodash.debounce'
+import useStore from '../hooks/storeHook'
+import { fetchRepos } from '../api/repoAPI'
+import {
+  FETCH_REPO_START,
+  FETCH_REPO_END,
+  SET_ITEMS,
+  SET_KEYWORD
+} from '../actions'
 
 const Container = styled.div`
   display: flex;
@@ -38,13 +47,50 @@ const InputWrapper = styled.div`
   }
 `
 
-const SearchInput = () => (
-  <Container>
-    <span>Search repos</span>
-    <InputWrapper>
-      <input />
-    </InputWrapper>
-  </Container>
-)
+const SearchInput = () => {
+  const { keyword, dispatch } = useStore()
+
+  const debounceSearch = debounce((keyword) => {
+    const timestamp = Date.now()
+    dispatch({
+      type: FETCH_REPO_START,
+      payload: timestamp
+    })
+
+    fetchRepos({ keyword }).then((repoList) => {
+      console.log(repoList)
+      dispatch({
+        type: SET_ITEMS,
+        payload: {
+          list: repoList,
+          timestamp
+        }
+      })
+
+      dispatch({
+        type: FETCH_REPO_END,
+        payload: timestamp
+      })
+    })
+  }, 460)
+
+  const handleChange = useCallback(
+    (e) => {
+      const { value } = e.target
+      dispatch({ type: SET_KEYWORD, payload: { text: value } })
+      debounceSearch(value)
+    },
+    [dispatch, debounceSearch]
+  )
+
+  return (
+    <Container>
+      <span>Search repos</span>
+      <InputWrapper>
+        <input onChange={handleChange} defaultValue={keyword} />
+      </InputWrapper>
+    </Container>
+  )
+}
 
 export default SearchInput

@@ -1,5 +1,8 @@
 {
   "verbose": true,
   "ignore": [],
-  "exec": "babel-node index.server.js"
+  "exec": "babel-node index.server.js",
+  "env": {
+    "PORT": "8080"
+  }
 }

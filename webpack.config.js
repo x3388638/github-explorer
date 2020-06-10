@@ -1,5 +1,7 @@
 const path = require('path')
+const webpack = require('webpack')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const nodemonConfig = require('./nodemon.json')
 
 module.exports = {
   mode: 'development',
@@ -19,5 +21,10 @@ module.exports = {
       }
     ]
   },
-  plugins: [new CleanWebpackPlugin({ verbose: true })]
+  plugins: [
+    new CleanWebpackPlugin({ verbose: true }),
+    new webpack.DefinePlugin({
+      'process.env.API_PORT': nodemonConfig.env.PORT
+    })
+  ]
 }
