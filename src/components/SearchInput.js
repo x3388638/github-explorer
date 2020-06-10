@@ -50,29 +50,31 @@ const InputWrapper = styled.div`
 const SearchInput = () => {
   const { keyword, dispatch } = useStore()
 
-  const debounceSearch = debounce((keyword) => {
-    const timestamp = Date.now()
-    dispatch({
-      type: FETCH_REPO_START,
-      payload: timestamp
-    })
-
-    fetchRepos({ keyword }).then((repoList) => {
-      console.log(repoList)
+  const debounceSearch = useCallback(
+    debounce((keyword) => {
+      const timestamp = Date.now()
       dispatch({
-        type: SET_ITEMS,
-        payload: {
-          list: repoList,
-          timestamp
-        }
-      })
-
-      dispatch({
-        type: FETCH_REPO_END,
+        type: FETCH_REPO_START,
         payload: timestamp
       })
-    })
-  }, 460)
+
+      fetchRepos({ keyword }).then((repoList) => {
+        dispatch({
+          type: SET_ITEMS,
+          payload: {
+            list: repoList,
+            timestamp
+          }
+        })
+
+        dispatch({
+          type: FETCH_REPO_END,
+          payload: timestamp
+        })
+      })
+    }, 460),
+    [dispatch]
+  )
 
   const handleChange = useCallback(
     (e) => {

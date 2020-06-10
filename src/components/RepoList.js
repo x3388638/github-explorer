@@ -7,10 +7,9 @@ const Contaienr = styled.section``
 
 const RepoList = () => {
   const {
-    repo: { list, isFetching }
+    repo: { list, isFetching },
+    keyword
   } = useStore()
-
-  console.log(list)
 
   return isFetching ? (
     'fetching...'
@@ -32,7 +31,7 @@ const RepoList = () => {
         return (
           <Item
             key={i}
-            keyword={'react' /* FIXME */}
+            keyword={keyword}
             name={name}
             desc={desc}
             topics={topics}

@@ -1,5 +1,5 @@
 import express from 'express'
-// import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-fetch'
 import cors from 'cors'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
@@ -7,18 +7,47 @@ import { StaticRouter } from 'react-router-dom'
 import { ServerStyleSheet } from 'styled-components'
 import { Html } from './src/template'
 import App from './src/App'
-import mockData from './server/mock/searchRepos.json'
 import { RepoListNormailzer } from './server/normalizer/repoNormalizer'
+let GITHUB_TOKEN
+try {
+  GITHUB_TOKEN = require('./.GITHUB_ACCESS_TOKEN')
+} catch {
+  console.warn(
+    'Export your GitHub access token in .GITHUB_ACCESS_TOKEN.js to be able to call GitHub API more times.'
+  )
+}
 
 const PORT = process.env.PORT || '8080'
 const app = express()
 
 app.use(express.static('dist'))
 
-app.get('/search/repos/:keyword', cors(), (req, res) => {
-  setTimeout(() => {
-    res.json(RepoListNormailzer(mockData))
-  }, 2000)
+app.get('/search/repos/:keyword/:page?', cors(), (req, res) => {
+  const { keyword, page = 1 } = req.params
+  fetch(
+    `https://api.github.com/search/repositories?q=${keyword}&page=${page}`,
+    {
+      headers: {
+        Accept: 'application/vnd.github.mercy-preview+json',
+        ...(GITHUB_TOKEN ? { Authorization: `token ${GITHUB_TOKEN}` } : {})
+      }
+    }
+  )
+    .then((res) => {
+      if (!res.ok) {
+        throw res
+      }
+
+      return res.json()
+    })
+    .catch((e) => {
+      console.error('[GitHub API] error', e)
+      return {}
+    })
+    .then(RepoListNormailzer)
+    .then((list) => {
+      res.json(list)
+    })
 })
 
 app.get('/:keyword?', (req, res) => {
