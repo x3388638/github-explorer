@@ -2,19 +2,23 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import reactStringReplace from 'react-string-replace'
+import IntlRelativeFormat from 'intl-relativeformat'
+
+const rf = new IntlRelativeFormat('en', { style: 'numeric' })
 
 const Container = styled.div`
   background: #fff;
   padding: 16px;
   position: relative;
-  box-shadow: 0px 2px 2px 0px #c7cdd2;
-  transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1) 0s;
+  box-shadow: 0px 2px 2px 0px var(--shadow-gray);
+  transition: all var(--transition-default);
   cursor: pointer;
   margin-bottom: 16px;
+  word-break: break-word;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0px 7px 5px 0px #c7cdd2;
+    box-shadow: 0px 7px 5px 0px var(--shadow-gray);
   }
 `
 
@@ -33,18 +37,54 @@ const Anhor = styled.a`
 
 const Name = styled.div`
   font-size: 18px;
-  margin-bottom: 8px;
-  color: #003abc;
+  margin-bottom: 4px;
+  color: var(--link-blue);
 `
 
 const Desc = styled.div`
   font-size: 14px;
-  color: #464e56;
+  color: var(--text-gray);
+  margin-bottom: 4px;
 `
 
-const Topics = styled.div``
+const Topics = styled.div`
+  margin-bottom: 4px;
+  position: relative;
+  pointer-events: none;
 
-const Detail = styled.div``
+  a {
+    background: rgba(93, 94, 255, 0.1);
+    padding: 0 8px;
+    font-size: 14px;
+    color: var(--link-blue-light);
+    text-decoration: none;
+    pointer-events: all;
+    transition: all var(--transition-default);
+    white-space: nowrap;
+
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
+
+    &:hover {
+      background: rgba(93, 94, 255, 0.2);
+    }
+  }
+`
+
+const Detail = styled.div`
+  font-size: 12px;
+  color: var(--text-gray);
+
+  span {
+    white-space: nowrap;
+    display: inline-block;
+
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
+  }
+`
 
 // FIXME: keyword
 const parseKeyword = (str, keyword = 'react') =>
@@ -56,21 +96,38 @@ const RepoItem = ({
   keyword,
   name,
   desc,
-  // topics = [],
-  // star,
-  // lang,
-  // license,
-  // lastUpdate,
-  // issues,
+  topics = [],
+  star,
+  lang,
+  license,
+  lastUpdate,
+  issues,
   url
 }) => {
   return (
     <Container>
+      <Anhor href={url} rel="noopener noreferrer" target="_blank" />
       <Name>{parseKeyword(name, keyword)}</Name>
       <Desc>{parseKeyword(desc, keyword)}</Desc>
-      <Topics>TODO: topics</Topics>
-      <Detail>TODO: detail</Detail>
-      <Anhor href={url} rel="noopener noreferrer" target="_blank" />
+      <Topics>
+        {topics.map((topic, i) => (
+          <a
+            key={i}
+            href={`https://github.com/topics/${topic}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {topic}
+          </a>
+        ))}
+      </Topics>
+      <Detail>
+        <span>★ {star > 999 ? `${(star / 1000).toPrecision(3)}k` : star}</span>
+        <span>{lang}</span>
+        <span>{license}</span>
+        <span>Updated {rf.format(new Date(lastUpdate), 'second')}</span>
+        <span>{issues} issues</span>
+      </Detail>
     </Container>
   )
 }

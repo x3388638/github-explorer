@@ -29,9 +29,8 @@ const InputWrapper = styled.div`
     padding: 8px 16px;
     border: 0;
     outline: 0;
-    border-radius: 8px;
     opacity: 0.4;
-    transition: opacity 0.5s cubic-bezier(0.2, 1, 0.3, 1) 0s;
+    transition: opacity var(--transition-default);
 
     &:focus {
       opacity: 1;

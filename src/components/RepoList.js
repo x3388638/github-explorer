@@ -124,7 +124,17 @@ const RepoList = () => {
         const {
           full_name,
           description,
-          topics = [],
+          topics = [
+            'react',
+            'facebook',
+            'yoooo',
+            'react',
+            'facebook',
+            'yoooo',
+            'react',
+            'facebook',
+            'yoooo'
+          ],
           stargazers_count,
           language,
           license = {},

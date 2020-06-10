@@ -17,6 +17,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "history": "^4.10.1",
+    "intl-relativeformat": "^6.4.3",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
