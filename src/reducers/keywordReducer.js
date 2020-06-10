@@ -1,8 +1,13 @@
-export const initialKeywordState = null
+import { SET_KEYWORD } from '../actions'
 
-const keywordReducer = (state = initialKeywordState, { type, payload }) => {
+export const keywordInitialState = ''
+
+const keywordReducer = (
+  state = keywordInitialState,
+  { type, payload } = {}
+) => {
   switch (type) {
-    case 'setKeyword': {
+    case SET_KEYWORD: {
       return payload.keyword
     }
 

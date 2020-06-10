@@ -1,8 +1,37 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import { Normalize } from 'styled-normalize'
+import { StoreProvider } from './hooks/storeHook'
 import SearchInput from './components/SearchInput'
 import RepoList from './components/RepoList'
+
+import repoReducer from './reducers/repoReducer'
+import keywordReducer from './reducers/keywordReducer'
+
+const combineReducers = (reducers) => {
+  const objInitState = {}
+  Object.keys(reducers).forEach((key) => {
+    objInitState[key] = reducers[key](undefined, { type: '' })
+  })
+
+  return (state, action) => {
+    if (action) {
+      Object.keys(reducers).forEach((key) => {
+        const prevState = objInitState[key]
+        objInitState[key] = reducers[key](prevState, action)
+      })
+    }
+
+    return { ...objInitState }
+  }
+}
+
+const mainReducer = combineReducers({
+  repo: repoReducer,
+  keyword: keywordReducer
+})
+
+const initialState = mainReducer()
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -57,17 +86,21 @@ const Highlight = styled.span`
 `
 
 const App = () => {
+  const [state, dispatch] = useReducer(mainReducer, initialState)
+
   return (
-    <Container>
-      <Normalize />
-      <GlobalStyle />
-      <Header>
-        <Highlight />
-        <h1>GitHub Explorer</h1>
-      </Header>
-      <SearchInput />
-      <RepoList />
-    </Container>
+    <StoreProvider value={{ ...state, dispatch }}>
+      <Container>
+        <Normalize />
+        <GlobalStyle />
+        <Header>
+          <Highlight />
+          <h1>GitHub Explorer</h1>
+        </Header>
+        <SearchInput />
+        <RepoList />
+      </Container>
+    </StoreProvider>
   )
 }
 

@@ -15,9 +15,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "history": "^4.10.1",
     "intl-relativeformat": "^6.4.3",
+    "isomorphic-fetch": "^2.2.1",
+    "lodash.debounce": "^4.0.8",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -44,8 +47,8 @@
     "webpack-cli": "^3.3.11"
   },
   "lint-staged": {
-    "*.{js,json,css}": "npm run prettier:check",
-    "*.js": "npm run lint"
+    "*.{js,json,css}": "prettier",
+    "*.js": "eslint"
   },
   "husky": {
     "hooks": {
