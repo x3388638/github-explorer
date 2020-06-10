@@ -1,17 +1,18 @@
 import React from 'react'
-import { useHistory, Link } from 'react-router-dom'
+import styled from 'styled-components'
+import { Normalize } from 'styled-normalize'
+
+const Container = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #f3f3f3;
+`
 
 const App = () => {
-  let h = useHistory()
-  const handleClick = () => {
-    h.push('/12388')
-  }
   return (
-    <div>
-      lalalal<Link to="/123">123</Link>
-      <Link to="/456">456</Link>
-      <div onClick={handleClick}>123</div>
-    </div>
+    <Container>
+      <Normalize />1
+    </Container>
   )
 }
 
