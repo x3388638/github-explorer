@@ -4,7 +4,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const nodemonConfig = require('./nodemon.json')
 
 module.exports = {
-  mode: 'development',
   entry: './index.client.js',
   output: {
     path: path.resolve(__dirname, 'dist'),

@@ -8,7 +8,7 @@ const keywordReducer = (
 ) => {
   switch (type) {
     case SET_KEYWORD: {
-      return payload.keyword
+      return payload.text
     }
 
     default:

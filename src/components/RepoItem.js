@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import reactStringReplace from 'react-string-replace'
 import IntlRelativeFormat from 'intl-relativeformat'
+import { escapeRegExp } from '../util/stringUtil'
 
 const rf = new IntlRelativeFormat('en', { style: 'numeric' })
 
@@ -86,11 +87,17 @@ const Detail = styled.div`
   }
 `
 
-// FIXME: keyword
-const parseKeyword = (str, keyword = 'react') =>
-  reactStringReplace(str, new RegExp(`(${keyword})`, 'i'), (match, i) => (
-    <Keyword key={i}>{match}</Keyword>
-  ))
+const parseKeyword = (str, keyword = '') => {
+  const keywords = escapeRegExp(keyword)
+    .split(' ')
+    .filter((key) => /^\w+$/.test(key))
+
+  return reactStringReplace(
+    str,
+    new RegExp(`(${keywords.join('|')})`, 'i'),
+    (match, i) => <Keyword key={i}>{match}</Keyword>
+  )
+}
 
 const RepoItem = ({
   keyword,
@@ -108,7 +115,7 @@ const RepoItem = ({
     <Container>
       <Anhor href={url} rel="noopener noreferrer" target="_blank" />
       <Name>{parseKeyword(name, keyword)}</Name>
-      <Desc>{parseKeyword(desc, keyword)}</Desc>
+      {desc && <Desc>{parseKeyword(desc, keyword)}</Desc>}
       <Topics>
         {topics.map((topic, i) => (
           <a
@@ -130,7 +137,11 @@ const RepoItem = ({
         {lang && <span>{lang}</span>}
         {license && <span>{license}</span>}
         <span>Updated {rf.format(new Date(lastUpdate), 'second')}</span>
-        {issue > 0 && <span>{issue} issue</span>}
+        {issue > 0 && (
+          <span>
+            {issue} issue{issue > 1 ? 's' : ''}
+          </span>
+        )}
       </Detail>
     </Container>
   )
@@ -142,7 +153,7 @@ RepoItem.propTypes = {
   // repo full name
   name: PropTypes.string.isRequired,
   // repo desc
-  desc: PropTypes.string.isRequired,
+  desc: PropTypes.string,
   // repo topics
   topics: PropTypes.arrayOf(PropTypes.string),
   // repo star count

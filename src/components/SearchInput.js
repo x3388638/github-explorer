@@ -79,8 +79,10 @@ const SearchInput = () => {
   const handleChange = useCallback(
     (e) => {
       const { value } = e.target
-      dispatch({ type: SET_KEYWORD, payload: { text: value } })
-      debounceSearch(value)
+      if (value.length) {
+        dispatch({ type: SET_KEYWORD, payload: { text: value } })
+        debounceSearch(value)
+      }
     },
     [dispatch, debounceSearch]
   )
