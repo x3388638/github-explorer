@@ -1,19 +1,71 @@
-import React from 'react'
+import React, { useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import useStore from '../hooks/storeHook'
 import Item from './RepoItem'
+import { fetchRepos } from '../api/repoAPI'
+import { FETCH_REPO_START, FETCH_REPO_END, APPEND_ITEMS } from '../actions'
 
+// FIXME: useless?
 const Contaienr = styled.section``
 
 const RepoList = () => {
+  const loadMoreRef = useRef(null)
   const {
-    repo: { list, isFetching },
-    keyword
+    repo: { list, page, isFull, isFetching },
+    keyword,
+    dispatch
   } = useStore()
 
-  return isFetching ? (
-    'fetching...'
-  ) : (
+  const fetchNextPage = useCallback(
+    (entries) => {
+      if (entries[0].intersectionRatio > 0 && list.length && !isFull) {
+        const timestamp = Date.now()
+        const nextPage = page + 1
+
+        dispatch({
+          type: FETCH_REPO_START,
+          payload: {
+            timestamp
+          }
+        })
+
+        fetchRepos({ keyword, page: nextPage }).then((repoList) => {
+          dispatch({
+            type: APPEND_ITEMS,
+            payload: {
+              list: repoList,
+              page: nextPage,
+              timestamp
+            }
+          })
+
+          dispatch({
+            type: FETCH_REPO_END,
+            payload: {
+              timestamp
+            }
+          })
+        })
+      }
+    },
+    [list, isFull, dispatch]
+  )
+
+  useEffect(() => {
+    if (loadMoreRef.current) {
+      const observer = new IntersectionObserver(fetchNextPage, {
+        rootMargin: '100px'
+      })
+
+      observer.observe(loadMoreRef.current)
+
+      return () => {
+        observer.disconnect()
+      }
+    }
+  }, [loadMoreRef.current, fetchNextPage])
+
+  return (
     <Contaienr>
       {list.map((item, i) => {
         const {
@@ -44,6 +96,8 @@ const RepoList = () => {
           />
         )
       })}
+      <span ref={loadMoreRef}>1</span>
+      {isFetching && <div>fetching...</div>}
     </Contaienr>
   )
 }

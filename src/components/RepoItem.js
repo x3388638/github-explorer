@@ -46,6 +46,12 @@ const Desc = styled.div`
   font-size: 14px;
   color: var(--text-gray);
   margin-bottom: 4px;
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 `
 
 const Topics = styled.div`

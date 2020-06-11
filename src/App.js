@@ -61,6 +61,7 @@ const Container = styled.main`
   margin: 0 auto;
   padding: 0 16px 16px;
   overflow: auto;
+  box-sizing: border-box;
 
   @media screen and (max-width: 767px) {
     padding: 0 8px 8px;

@@ -7,18 +7,22 @@ import {
 
 export const repoInitialState = {
   list: [],
+  page: 1, // start from 1
+  isFull: false, // all pages have been fetched
   isFetching: false,
   fetchTimestamp: null
 }
 
-const repoReducer = (state = repoInitialState, { type, payload } = {}) => {
+const repoReducer = (state = repoInitialState, { type, payload = {} } = {}) => {
   switch (type) {
     case APPEND_ITEMS: {
-      const { list, timestamp } = payload
+      const { list, page, timestamp } = payload
       if (!state.fetchTimestamp || state.fetchTimestamp === timestamp) {
         return {
           ...state,
-          list: [...state.list, ...list]
+          list: [...state.list, ...list],
+          page,
+          isFull: !list.length
         }
       }
 
@@ -38,15 +42,19 @@ const repoReducer = (state = repoInitialState, { type, payload } = {}) => {
     }
 
     case FETCH_REPO_START: {
+      const { timestamp, clearList } = payload
+
       return {
         ...state,
+        ...(clearList ? { list: [], page: 1, isFull: false } : {}),
         isFetching: true,
-        fetchTimestamp: payload
+        fetchTimestamp: timestamp
       }
     }
 
     case FETCH_REPO_END: {
-      if (payload === state.fetchTimestamp) {
+      const { timestamp } = payload
+      if (timestamp === state.fetchTimestamp) {
         return {
           ...state,
           isFetching: false,

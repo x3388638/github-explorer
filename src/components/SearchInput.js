@@ -55,7 +55,10 @@ const SearchInput = () => {
       const timestamp = Date.now()
       dispatch({
         type: FETCH_REPO_START,
-        payload: timestamp
+        payload: {
+          timestamp,
+          clearList: true
+        }
       })
 
       fetchRepos({ keyword }).then((repoList) => {
@@ -69,7 +72,9 @@ const SearchInput = () => {
 
         dispatch({
           type: FETCH_REPO_END,
-          payload: timestamp
+          payload: {
+            timestamp
+          }
         })
       })
     }, 460),
