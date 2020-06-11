@@ -10,6 +10,12 @@ const SpinnerWrapper = styled.div`
   text-align: center;
 `
 
+const NoResultText = styled.div`
+  text-align: center;
+  font-weight: bold;
+  word-break: break-word;
+`
+
 const RepoList = () => {
   const loadMoreRef = useRef(null)
   const {
@@ -50,7 +56,7 @@ const RepoList = () => {
         })
       }
     },
-    [list, isFull, dispatch]
+    [list, isFull, dispatch, page, keyword]
   )
 
   useEffect(() => {
@@ -65,7 +71,7 @@ const RepoList = () => {
         observer.disconnect()
       }
     }
-  }, [loadMoreRef.current, fetchNextPage])
+  }, [loadMoreRef, fetchNextPage])
 
   return (
     <section>
@@ -99,6 +105,11 @@ const RepoList = () => {
         )
       })}
       <span ref={loadMoreRef}></span>
+      {!isFetching && keyword && !list.length && (
+        <NoResultText>
+          There are not any repositories matching &apos;{keyword}&apos;
+        </NoResultText>
+      )}
       {isFetching && (
         <SpinnerWrapper>
           <Spinner />

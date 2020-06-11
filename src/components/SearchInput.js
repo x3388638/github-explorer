@@ -53,6 +53,8 @@ const SearchInput = () => {
   const debounceSearch = useCallback(
     debounce((keyword) => {
       const timestamp = Date.now()
+      dispatch({ type: SET_KEYWORD, payload: { text: keyword } })
+
       dispatch({
         type: FETCH_REPO_START,
         payload: {
@@ -85,11 +87,10 @@ const SearchInput = () => {
     (e) => {
       const { value } = e.target
       if (value.length) {
-        dispatch({ type: SET_KEYWORD, payload: { text: value } })
         debounceSearch(value)
       }
     },
-    [dispatch, debounceSearch]
+    [debounceSearch]
   )
 
   return (
