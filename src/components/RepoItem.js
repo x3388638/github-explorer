@@ -46,7 +46,7 @@ const Desc = styled.div`
   font-size: 14px;
   color: var(--text-gray);
   margin-bottom: 4px;
-  height: 40px;
+  max-height: 40px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

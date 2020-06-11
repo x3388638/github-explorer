@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import useStore from '../hooks/storeHook'
 import Item from './RepoItem'
+import Spinner from './Spinner'
 import { fetchRepos } from '../api/repoAPI'
 import { FETCH_REPO_START, FETCH_REPO_END, APPEND_ITEMS } from '../actions'
 
-// FIXME: useless?
-const Contaienr = styled.section``
+const SpinnerWrapper = styled.div`
+  text-align: center;
+`
 
 const RepoList = () => {
   const loadMoreRef = useRef(null)
@@ -66,7 +68,7 @@ const RepoList = () => {
   }, [loadMoreRef.current, fetchNextPage])
 
   return (
-    <Contaienr>
+    <section>
       {list.map((item, i) => {
         const {
           name,
@@ -96,9 +98,13 @@ const RepoList = () => {
           />
         )
       })}
-      <span ref={loadMoreRef}>1</span>
-      {isFetching && <div>fetching...</div>}
-    </Contaienr>
+      <span ref={loadMoreRef}></span>
+      {isFetching && (
+        <SpinnerWrapper>
+          <Spinner />
+        </SpinnerWrapper>
+      )}
+    </section>
   )
 }
 
