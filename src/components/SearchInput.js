@@ -1,14 +1,10 @@
-import React, { useCallback } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import debounce from 'lodash.debounce'
 import useStore from '../hooks/storeHook'
-import { fetchRepos } from '../api/repoAPI'
-import {
-  FETCH_REPO_START,
-  FETCH_REPO_END,
-  SET_ITEMS,
-  SET_KEYWORD
-} from '../actions'
+import useFetchRepos from '../hooks/fetchReposHook'
+import { useLocation, useHistory } from 'react-router-dom'
+import { SET_ITEMS, SET_KEYWORD } from '../actions'
 
 const Container = styled.div`
   display: flex;
@@ -49,48 +45,51 @@ const InputWrapper = styled.div`
 
 const SearchInput = () => {
   const { keyword, dispatch } = useStore()
+  const location = useLocation()
+  const history = useHistory()
+  const fetchRepos = useFetchRepos()
 
-  const debounceSearch = useCallback(
-    debounce((keyword) => {
-      const timestamp = Date.now()
-      dispatch({ type: SET_KEYWORD, payload: { text: keyword } })
+  // set initial keyword from url path
+  useEffect(() => {
+    const initialKeyword = location.pathname.replace('/', '')
 
+    if (!keyword && initialKeyword) {
       dispatch({
-        type: FETCH_REPO_START,
+        type: SET_KEYWORD,
         payload: {
-          timestamp,
-          clearList: true
+          text: initialKeyword
         }
       })
+    }
+  }, [location, keyword])
 
-      fetchRepos({ keyword }).then((repoList) => {
-        dispatch({
-          type: SET_ITEMS,
-          payload: {
-            list: repoList,
-            timestamp
-          }
-        })
-
-        dispatch({
-          type: FETCH_REPO_END,
-          payload: {
-            timestamp
-          }
-        })
+  // fetch repos on keyword changed
+  useEffect(() => {
+    if (keyword.length) {
+      fetchRepos({
+        type: SET_ITEMS,
+        keyword
       })
+    }
+  }, [keyword, fetchRepos])
+
+  const debounceSetKeyword = useCallback(
+    debounce((keyword) => {
+      dispatch({ type: SET_KEYWORD, payload: { text: keyword } })
+      history.push(`/${keyword}`)
+      document.title = `Search repos: ${keyword}`
     }, 460),
-    [dispatch]
+    [dispatch, history]
   )
 
   const handleChange = useCallback(
     (e) => {
       const { value } = e.target
       if (value.length) {
-        debounceSearch(value)
+        debounceSetKeyword(value)
       }
     },
-    [debounceSearch]
+    [debounceSetKeyword]
   )
 
   return (

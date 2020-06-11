@@ -51,7 +51,7 @@ app.get('/search/repos/:keyword/:page?', cors(), (req, res) => {
 })
 
 app.get('/:keyword?', (req, res) => {
-  const { keyword } = req.params
+  const { keyword = '' } = req.params
   const sheet = new ServerStyleSheet()
   const body = ReactDOMServer.renderToString(
     sheet.collectStyles(

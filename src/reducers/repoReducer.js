@@ -7,7 +7,7 @@ import {
 
 export const repoInitialState = {
   list: [],
-  page: 1, // start from 1
+  page: -1, // start from 1, -1 for not searched
   isFull: false, // all pages have been fetched
   isFetching: false,
   fetchTimestamp: null
@@ -34,7 +34,8 @@ const repoReducer = (state = repoInitialState, { type, payload = {} } = {}) => {
       if (!state.fetchTimestamp || state.fetchTimestamp === timestamp) {
         return {
           ...state,
-          list
+          list,
+          page: 1
         }
       }
 

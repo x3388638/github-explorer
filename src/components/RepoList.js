@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import useStore from '../hooks/storeHook'
+import useFetchRepos from '../hooks/fetchReposHook'
 import Item from './RepoItem'
 import Spinner from './Spinner'
-import { fetchRepos } from '../api/repoAPI'
-import { FETCH_REPO_START, FETCH_REPO_END, APPEND_ITEMS } from '../actions'
+import { APPEND_ITEMS } from '../actions'
 
 const SpinnerWrapper = styled.div`
   text-align: center;
@@ -20,43 +20,22 @@ const RepoList = () => {
   const loadMoreRef = useRef(null)
   const {
     repo: { list, page, isFull, isFetching },
-    keyword,
-    dispatch
+    keyword
   } = useStore()
+
+  const fetchRepos = useFetchRepos()
 
   const fetchNextPage = useCallback(
     (entries) => {
       if (entries[0].intersectionRatio > 0 && list.length && !isFull) {
-        const timestamp = Date.now()
-        const nextPage = page + 1
-
-        dispatch({
-          type: FETCH_REPO_START,
-          payload: {
-            timestamp
-          }
-        })
-
-        fetchRepos({ keyword, page: nextPage }).then((repoList) => {
-          dispatch({
-            type: APPEND_ITEMS,
-            payload: {
-              list: repoList,
-              page: nextPage,
-              timestamp
-            }
-          })
-
-          dispatch({
-            type: FETCH_REPO_END,
-            payload: {
-              timestamp
-            }
-          })
+        fetchRepos({
+          type: APPEND_ITEMS,
+          keyword,
+          page: page + 1
         })
       }
     },
-    [list, isFull, dispatch, page, keyword]
+    [list, isFull, page, keyword, fetchRepos]
   )
 
   useEffect(() => {
@@ -105,7 +84,7 @@ const RepoList = () => {
         )
       })}
       <span ref={loadMoreRef}></span>
-      {!isFetching && keyword && !list.length && (
+      {!isFetching && keyword && !list.length && page > 0 && (
         <NoResultText>
           There are not any repositories matching &apos;{keyword}&apos;
         </NoResultText>
