@@ -27,7 +27,12 @@ const RepoList = () => {
 
   const fetchNextPage = useCallback(
     (entries) => {
-      if (entries[0].intersectionRatio > 0 && list.length && !isFull) {
+      if (
+        entries[0].intersectionRatio > 0 &&
+        list.length &&
+        !isFull &&
+        !isFetching
+      ) {
         fetchRepos({
           type: APPEND_ITEMS,
           keyword,
@@ -35,7 +40,7 @@ const RepoList = () => {
         })
       }
     },
-    [list, isFull, page, keyword, fetchRepos]
+    [list, isFull, page, keyword, fetchRepos, isFetching]
   )
 
   useEffect(() => {

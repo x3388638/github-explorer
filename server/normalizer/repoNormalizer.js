@@ -3,13 +3,13 @@ export const singleRepoNormalizer = (repo) => {
     full_name,
     description,
     topics = [],
-    stargazers_count,
+    stargazers_count = 0,
     language,
     license,
     updated_at,
-    open_issues,
+    open_issues = 0,
     html_url
-  } = repo
+  } = repo || {}
 
   return {
     name: full_name,
@@ -25,4 +25,4 @@ export const singleRepoNormalizer = (repo) => {
 }
 
 export const RepoListNormailzer = (res) =>
-  (res.items || []).map(singleRepoNormalizer)
+  (res && res.items ? res.items : []).map(singleRepoNormalizer)

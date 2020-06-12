@@ -1,3 +1,5 @@
-export const escapeRegExp = (string) => {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+export const escapeRegExp = (string = '') => {
+  return typeof string === 'string'
+    ? string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    : ''
 }

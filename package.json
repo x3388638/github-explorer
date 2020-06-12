@@ -12,7 +12,8 @@
     "prettier:check": "prettier --check './**/*.{js,json,css}'",
     "prettier:write": "prettier --write './**/*.{js,json,css}'",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -51,6 +52,7 @@
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.4",
     "husky": "^4.2.5",
+    "jest": "^26.0.1",
     "lint-staged": "^10.2.9",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
@@ -64,7 +66,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && npm run test"
     }
   }
 }
