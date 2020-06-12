@@ -4,7 +4,7 @@ export const keywordInitialState = ''
 
 const keywordReducer = (
   state = keywordInitialState,
-  { type, payload } = {}
+  { type, payload = {} } = {}
 ) => {
   switch (type) {
     case SET_KEYWORD: {

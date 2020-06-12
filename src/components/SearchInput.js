@@ -51,7 +51,7 @@ const SearchInput = () => {
 
   // set initial keyword from url path
   useEffect(() => {
-    const initialKeyword = location.pathname.replace('/', '')
+    const initialKeyword = location.pathname.replace('/', '').trim()
 
     if (!keyword && initialKeyword) {
       dispatch({
@@ -61,7 +61,7 @@ const SearchInput = () => {
         }
       })
     }
-  }, [location, keyword])
+  }, [location, keyword, dispatch])
 
   // fetch repos on keyword changed
   useEffect(() => {
@@ -84,7 +84,7 @@ const SearchInput = () => {
 
   const handleChange = useCallback(
     (e) => {
-      const { value } = e.target
+      const value = e.target.value.trim()
       if (value.length) {
         debounceSetKeyword(value)
       }

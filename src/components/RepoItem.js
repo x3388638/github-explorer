@@ -116,42 +116,38 @@ const RepoItem = ({
   lastUpdate,
   issue,
   url
-}) => {
-  return (
-    <Container>
-      <Anhor href={url} rel="noopener noreferrer" target="_blank" />
-      <Name>{parseKeyword(name, keyword)}</Name>
-      {desc && <Desc>{parseKeyword(desc, keyword)}</Desc>}
-      <Topics>
-        {topics.map((topic, i) => (
-          <a
-            key={i}
-            href={`https://github.com/topics/${topic}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {topic}
-          </a>
-        ))}
-      </Topics>
-      <Detail>
-        {star > 0 && (
-          <span>
-            ★ {star > 999 ? `${(star / 1000).toPrecision(3)}k` : star}
-          </span>
-        )}
-        {lang && <span>{lang}</span>}
-        {license && <span>{license}</span>}
-        <span>Updated {rf.format(new Date(lastUpdate), 'second')}</span>
-        {issue > 0 && (
-          <span>
-            {issue} issue{issue > 1 ? 's' : ''}
-          </span>
-        )}
-      </Detail>
-    </Container>
-  )
-}
+}) => (
+  <Container>
+    <Anhor href={url} rel="noopener noreferrer" target="_blank" />
+    <Name>{parseKeyword(name, keyword)}</Name>
+    {desc && <Desc>{parseKeyword(desc, keyword)}</Desc>}
+    <Topics>
+      {topics.map((topic, i) => (
+        <a
+          key={i}
+          href={`https://github.com/topics/${topic}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {topic}
+        </a>
+      ))}
+    </Topics>
+    <Detail>
+      {star > 0 && (
+        <span>★ {star > 999 ? `${(star / 1000).toPrecision(3)}k` : star}</span>
+      )}
+      {lang && <span>{lang}</span>}
+      {license && <span>{license}</span>}
+      <span>Updated {rf.format(new Date(lastUpdate), 'second')}</span>
+      {issue > 0 && (
+        <span>
+          {issue} issue{issue > 1 ? 's' : ''}
+        </span>
+      )}
+    </Detail>
+  </Container>
+)
 
 RepoItem.propTypes = {
   // search keyword

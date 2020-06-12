@@ -5,7 +5,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { ServerStyleSheet } from 'styled-components'
-import { Html } from './src/template'
+import { Html } from './server/template'
 import App from './src/App'
 import { RepoListNormailzer } from './server/normalizer/repoNormalizer'
 let GITHUB_TOKEN

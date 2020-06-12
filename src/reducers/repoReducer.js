@@ -8,7 +8,7 @@ import {
 export const repoInitialState = {
   list: [],
   page: -1, // start from 1, -1 for not searched
-  isFull: false, // all pages have been fetched
+  isFull: false, // is all pages have been fetched
   isFetching: false,
   fetchTimestamp: null
 }
