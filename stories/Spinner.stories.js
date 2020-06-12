@@ -10,8 +10,8 @@ export default {
 
 export const Default = () => (
   <Spinner
-    size={number('Dot size', 8, { range: true, min: 1, max: 50, step: 1 })}
-    gap={number('Dot gap', 8, { range: true, min: 1, max: 50, step: 1 })}
-    color={color('Dot color', '#009688')}
+    size={number('size', 8, { range: true, min: 1, max: 50, step: 1 })}
+    gap={number('gap', 8, { range: true, min: 1, max: 50, step: 1 })}
+    color={color('color', '#009688')}
   />
 )
