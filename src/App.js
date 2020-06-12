@@ -52,6 +52,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     background: var(--bg-gray-light);
     color: var(--text-default);
+    font-family: sans-serif;
   }
 `
 

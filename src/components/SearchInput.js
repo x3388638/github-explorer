@@ -96,7 +96,11 @@ const SearchInput = () => {
     <Container>
       <span>Search repos</span>
       <InputWrapper>
-        <input onChange={handleChange} defaultValue={keyword} />
+        <input
+          onChange={handleChange}
+          defaultValue={keyword}
+          aria-label="Search for repos"
+        />
       </InputWrapper>
     </Container>
   )

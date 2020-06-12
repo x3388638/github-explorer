@@ -1,6 +1,7 @@
 import express from 'express'
 import fetch from 'isomorphic-fetch'
 import cors from 'cors'
+import compression from 'compression'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
@@ -20,6 +21,7 @@ try {
 const PORT = process.env.PORT || '8080'
 const app = express()
 
+app.use(compression())
 app.use(express.static('dist'))
 
 app.get('/search/repos/:keyword/:page?', cors(), (req, res) => {

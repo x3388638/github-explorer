@@ -67,7 +67,7 @@ const Topics = styled.div`
     text-decoration: none;
     pointer-events: all;
     transition: all var(--transition-default);
-    white-space: nowrap;
+    display: inline-block;
 
     &:not(:last-child) {
       margin-right: 8px;
