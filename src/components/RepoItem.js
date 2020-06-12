@@ -122,7 +122,7 @@ const RepoItem = ({
   }
 
   return (
-    <Container>
+    <Container data-test="RepoItem">
       <Anhor href={url} rel="noopener noreferrer" target="_blank" />
       <Name>{parseKeyword(name, keyword)}</Name>
       {desc && <Desc>{parseKeyword(desc, keyword)}</Desc>}

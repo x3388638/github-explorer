@@ -97,6 +97,7 @@ const SearchInput = () => {
       <span>Search repos</span>
       <InputWrapper>
         <input
+          data-test="searchInput"
           onChange={handleChange}
           defaultValue={keyword}
           aria-label="Search for repos"

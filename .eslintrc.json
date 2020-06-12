@@ -3,12 +3,14 @@
     "browser": true,
     "es2020": true,
     "node": true,
-    "jest": true
+    "jest": true,
+    "codeceptjs/codeceptjs": true
   },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "plugin:codeceptjs/recommended"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -17,7 +19,7 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": ["react", "codeceptjs"],
   "settings": {
     "react": {
       "version": "detect"

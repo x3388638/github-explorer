@@ -90,12 +90,12 @@ const RepoList = () => {
       })}
       <span ref={loadMoreRef}></span>
       {!isFetching && keyword && !list.length && page > 0 && (
-        <NoResultText>
+        <NoResultText data-test="noResultText">
           There are not any repositories matching &apos;{keyword}&apos;
         </NoResultText>
       )}
       {isFetching && (
-        <SpinnerWrapper>
+        <SpinnerWrapper data-test="repoListLoadingSpinner">
           <Spinner />
         </SpinnerWrapper>
       )}

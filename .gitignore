@@ -1,3 +1,4 @@
 node_modules
 dist
 .GITHUB_ACCESS_TOKEN.js
+__e2e__/output/*
