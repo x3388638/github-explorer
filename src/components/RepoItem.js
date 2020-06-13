@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import reactStringReplace from 'react-string-replace'
 import IntlRelativeFormat from 'intl-relativeformat'
 import { escapeRegExp } from '../util/stringUtil'
+import { to3DigitsThousand } from '../util/numberUtil'
 
 const rf = new IntlRelativeFormat('en', { style: 'numeric' })
 
@@ -139,17 +140,13 @@ const RepoItem = ({
         ))}
       </Topics>
       <Detail>
-        {star > 0 && (
-          <span>
-            ★ {star > 999 ? `${(star / 1000).toPrecision(3)}k` : star}
-          </span>
-        )}
+        {!!star && <span>★ {to3DigitsThousand(star)}</span>}
         {lang && <span>{lang}</span>}
         {license && <span>{license}</span>}
         <span>Updated {rf.format(new Date(lastUpdate), 'second')}</span>
-        {issue > 0 && (
+        {!!issue && (
           <span>
-            {issue} issue{issue > 1 ? 's' : ''}
+            {to3DigitsThousand(issue)} issue{issue > 1 ? 's' : ''}
           </span>
         )}
       </Detail>
