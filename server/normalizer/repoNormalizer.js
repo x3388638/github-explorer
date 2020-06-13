@@ -6,7 +6,7 @@ export const singleRepoNormalizer = (repo) => {
     stargazers_count = 0,
     language,
     license,
-    updated_at,
+    pushed_at,
     open_issues = 0,
     html_url
   } = repo || {}
@@ -18,7 +18,7 @@ export const singleRepoNormalizer = (repo) => {
     star: stargazers_count,
     lang: language,
     license: license && license.url ? license : {},
-    lastUpdate: updated_at,
+    lastUpdate: pushed_at,
     issue: open_issues,
     url: html_url
   }
