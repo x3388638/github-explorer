@@ -9,7 +9,7 @@ import { to3DigitsThousand } from '../util/numberUtil'
 const rf = new IntlRelativeFormat('en', { style: 'numeric' })
 
 const Container = styled.div`
-  background: #fff;
+  background: var(--bg-white);
   padding: 16px;
   position: relative;
   box-shadow: 0px 2px 2px 0px var(--shadow-gray);
@@ -76,6 +76,10 @@ const Topics = styled.div`
 
     &:hover {
       background: rgba(93, 94, 255, 0.2);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      background: #232a31;
     }
   }
 `

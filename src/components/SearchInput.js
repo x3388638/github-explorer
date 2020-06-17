@@ -26,6 +26,10 @@ const InputWrapper = styled.div`
     height: 1px;
     background: #979ea8;
     bottom: 0;
+
+    @media (prefers-color-scheme: dark) {
+      background: #464e56;
+    }
   }
 
   input {
@@ -36,6 +40,8 @@ const InputWrapper = styled.div`
     outline: 0;
     opacity: 0.4;
     transition: opacity var(--transition-default);
+    color: var(--text-default);
+    background: var(--bg-white);
 
     &:focus {
       opacity: 1;
