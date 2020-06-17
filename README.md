@@ -59,8 +59,10 @@ https://drive.google.com/file/d/1_Yh9z2jmA6I74XL9jCyFrhGoiRVET0lF/view?usp=shari
 - React w/ Hooks
 - react-router
 - useContext + useReducer for state management
+    - repo
+    - keyword
 - styled-component
-- Transpile via webpack and babel
+- Transpile/bundle via webpack and babel
 
 ## Feature
 - Gzip for server response
@@ -70,6 +72,7 @@ https://drive.google.com/file/d/1_Yh9z2jmA6I74XL9jCyFrhGoiRVET0lF/view?usp=shari
 -  Highlight keywords in repo card
 - Scroll to bottom to load more
     - Use intersectionOberver to check if user scrolls to bottom to load more
+- Dark mode (w/ bad design lol)
 
 ## Code quality
 - ESLint
