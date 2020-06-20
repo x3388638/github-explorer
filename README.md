@@ -1,6 +1,6 @@
 # GitHub Explorer
 Explore all repos in the GitHub world
-![](https://gist.githubusercontent.com/x3388638/82e341b43990c7851c9438dfdec43e3b/raw/ecab7b6543076ba29b253478179852e041b43a71/github-explorer.png)
+![](https://gist.githubusercontent.com/x3388638/82e341b43990c7851c9438dfdec43e3b/raw/5f91ff37d8f5081b94d85106caa0896e24a9b786/github-explorer-2.png)
 
 ## Set GitHub access token (Optional)
 > For requests using Basic Authentication, OAuth, or client ID and secret, you can make up to 30 requests per minute. For unauthenticated requests, the rate limit allows you to make up to 10 requests per minute. -- https://developer.github.com/v3/search/#rate-limit
