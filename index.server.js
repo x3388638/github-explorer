@@ -1,6 +1,5 @@
 import express from 'express'
 import fetch from 'isomorphic-fetch'
-import cors from 'cors'
 import compression from 'compression'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
@@ -24,7 +23,7 @@ const app = express()
 app.use(compression())
 app.use(express.static('dist'))
 
-app.get('/search/repos/:keyword/:page?', cors(), (req, res) => {
+app.get('/search/repos/:keyword/:page?', (req, res) => {
   const { keyword, page = 1 } = req.params
   fetch(
     `https://api.github.com/search/repositories?q=${keyword}&page=${page}`,
