@@ -24,5 +24,5 @@ export const singleRepoNormalizer = (repo) => {
   }
 }
 
-export const RepoListNormailzer = (res) =>
+export const repoListNormailzer = (res) =>
   (res && res.items ? res.items : []).map(singleRepoNormalizer)

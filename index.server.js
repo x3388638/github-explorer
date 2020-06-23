@@ -7,7 +7,7 @@ import { StaticRouter } from 'react-router-dom'
 import { ServerStyleSheet } from 'styled-components'
 import { Html } from './server/template'
 import App from './src/App'
-import { RepoListNormailzer } from './server/normalizer/repoNormalizer'
+import { repoListNormailzer } from './server/normalizer/repoNormalizer'
 let GITHUB_TOKEN
 try {
   GITHUB_TOKEN = require('./.GITHUB_ACCESS_TOKEN')
@@ -45,7 +45,7 @@ app.get('/search/repos/:keyword/:page?', (req, res) => {
       console.error('[GitHub API] error', e)
       return {}
     })
-    .then(RepoListNormailzer)
+    .then(repoListNormailzer)
     .then((list) => {
       res.json(list)
     })

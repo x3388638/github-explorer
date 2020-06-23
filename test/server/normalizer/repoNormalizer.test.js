@@ -1,6 +1,6 @@
 import {
   singleRepoNormalizer,
-  RepoListNormailzer
+  repoListNormailzer
 } from '../../../server/normalizer/repoNormalizer'
 import mockRes from '../../../server/mock/searchRepos.json'
 
@@ -47,12 +47,12 @@ describe('server/normalizer/repoNormalizer', () => {
     })
   })
 
-  it('RepoListNormailzer should work with bad param', () => {
-    expect(RepoListNormailzer()).toEqual([])
+  it('repoListNormailzer should work with bad param', () => {
+    expect(repoListNormailzer()).toEqual([])
   })
 
-  it('RepoListNormailzer should work correctly', () => {
-    expect(Array.isArray(RepoListNormailzer(mockRes))).toBe(true)
-    expect(RepoListNormailzer(mockRes).length).toEqual(30)
+  it('repoListNormailzer should work correctly', () => {
+    expect(Array.isArray(repoListNormailzer(mockRes))).toBe(true)
+    expect(repoListNormailzer(mockRes).length).toEqual(30)
   })
 })
