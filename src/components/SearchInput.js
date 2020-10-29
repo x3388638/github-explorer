@@ -1,9 +1,9 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import debounce from 'lodash.debounce'
 import useStore from '../hooks/storeHook'
 import useFetchRepos from '../hooks/fetchReposHook'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { SET_ITEMS, SET_KEYWORD } from '../actions'
 
 const Container = styled.div`
@@ -51,42 +51,18 @@ const InputWrapper = styled.div`
 
 const SearchInput = () => {
   const { keyword, dispatch } = useStore()
-  const location = useLocation()
   const history = useHistory()
   const fetchRepos = useFetchRepos()
 
-  // set initial keyword from url path
-  useEffect(() => {
-    const initialKeyword = location.pathname.replace('/', '').trim()
-
-    if (!keyword && initialKeyword) {
-      dispatch({
-        type: SET_KEYWORD,
-        payload: {
-          text: initialKeyword
-        }
-      })
-    }
-  }, [location, keyword, dispatch])
-
-  // fetch repos on keyword changed
-  useEffect(() => {
-    if (keyword.length) {
-      fetchRepos({
-        type: SET_ITEMS,
-        keyword
-      })
-    }
-  }, [keyword, fetchRepos])
-
-  const debounceSetKeyword = useCallback(
-    debounce((keyword) => {
-      dispatch({ type: SET_KEYWORD, payload: { text: keyword } })
-      history.push(`/${keyword}`)
-      document.title = `Search repos: ${keyword}`
-    }, 460),
-    [dispatch, history]
-  )
+  const debounceSetKeyword = debounce((keyword) => {
+    dispatch({ type: SET_KEYWORD, payload: { text: keyword } })
+    history.push(`/${keyword}`)
+    document.title = `Search repos: ${keyword}`
+    fetchRepos({
+      type: SET_ITEMS,
+      keyword
+    })
+  }, 460)
 
   const handleChange = useCallback(
     (e) => {

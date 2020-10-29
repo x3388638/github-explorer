@@ -1,38 +1,14 @@
 import React, { useReducer } from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Normalize } from 'styled-normalize'
 import { StoreProvider } from './hooks/storeHook'
 import GlobalStyle from './components/GlobalStyle'
 import SearchInput from './components/SearchInput'
 import RepoList from './components/RepoList'
+import { mainReducer } from './reducers'
 
-import repoReducer from './reducers/repoReducer'
-import keywordReducer from './reducers/keywordReducer'
-
-const combineReducers = (reducers) => {
-  const objInitState = {}
-  Object.keys(reducers).forEach((key) => {
-    objInitState[key] = reducers[key](undefined, { type: '' })
-  })
-
-  return (state, action) => {
-    if (action) {
-      Object.keys(reducers).forEach((key) => {
-        const prevState = objInitState[key]
-        objInitState[key] = reducers[key](prevState, action)
-      })
-    }
-
-    return { ...objInitState }
-  }
-}
-
-const mainReducer = combineReducers({
-  repo: repoReducer,
-  keyword: keywordReducer
-})
-
-const initialState = mainReducer()
+const defaultState = mainReducer()
 
 const Container = styled.main`
   max-width: 700px;
@@ -65,7 +41,7 @@ const Highlight = styled.span`
   left: -8px;
 `
 
-const App = () => {
+const App = ({ initialState = defaultState }) => {
   const [state, dispatch] = useReducer(mainReducer, initialState)
 
   return (
@@ -82,6 +58,10 @@ const App = () => {
       </Container>
     </StoreProvider>
   )
+}
+
+App.propTypes = {
+  initialState: PropTypes.shape({})
 }
 
 export default App

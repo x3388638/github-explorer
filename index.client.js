@@ -5,7 +5,7 @@ import App from './src/App'
 
 ReactDOM.hydrate(
   <BrowserRouter>
-    <App />
+    <App initialState={window.__initialState__} />
   </BrowserRouter>,
   document.getElementById('app')
 )

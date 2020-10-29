@@ -1,5 +1,4 @@
 import express from 'express'
-import fetch from 'isomorphic-fetch'
 import compression from 'compression'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
@@ -7,15 +6,9 @@ import { StaticRouter } from 'react-router-dom'
 import { ServerStyleSheet } from 'styled-components'
 import { Html } from './server/template'
 import App from './src/App'
-import { repoListNormailzer } from './server/normalizer/repoNormalizer'
-let GITHUB_TOKEN
-try {
-  GITHUB_TOKEN = require('./.GITHUB_ACCESS_TOKEN')
-} catch {
-  console.warn(
-    'Export your GitHub access token in .GITHUB_ACCESS_TOKEN.js to be able to call GitHub API more times.'
-  )
-}
+import { search as searchRepo } from './server/api/repo'
+import { mainReducer } from './src/reducers'
+import { SET_ITEMS, SET_KEYWORD } from './src/actions'
 
 const PORT = process.env.PORT || '8080'
 const app = express()
@@ -23,41 +16,39 @@ const app = express()
 app.use(compression())
 app.use(express.static('dist'))
 
-app.get('/search/repos/:keyword/:page?', (req, res) => {
+app.get('/search/repos/:keyword/:page?', async (req, res) => {
   const { keyword, page = 1 } = req.params
-  fetch(
-    `https://api.github.com/search/repositories?q=${keyword}&page=${page}`,
-    {
-      headers: {
-        Accept: 'application/vnd.github.mercy-preview+json',
-        ...(GITHUB_TOKEN ? { Authorization: `token ${GITHUB_TOKEN}` } : {})
-      }
-    }
-  )
-    .then((res) => {
-      if (!res.ok) {
-        throw res
-      }
-
-      return res.json()
-    })
-    .catch((e) => {
-      console.error('[GitHub API] error', e)
-      return {}
-    })
-    .then(repoListNormailzer)
-    .then((list) => {
-      res.json(list)
-    })
+  const list = await searchRepo(keyword, page)
+  res.json(list)
 })
 
-app.get('/:keyword?', (req, res) => {
+app.get('/:keyword?', async (req, res) => {
   const { keyword = '' } = req.params
+  let repoList = []
+  let initialState = mainReducer()
+  if (keyword) {
+    repoList = await searchRepo(keyword)
+  }
+
+  initialState = mainReducer(initialState, {
+    type: SET_ITEMS,
+    payload: {
+      list: repoList
+    }
+  })
+
+  initialState = mainReducer(initialState, {
+    type: SET_KEYWORD,
+    payload: {
+      text: keyword
+    }
+  })
+
   const sheet = new ServerStyleSheet()
   const body = ReactDOMServer.renderToString(
     sheet.collectStyles(
       <StaticRouter url={req.url} context={{}}>
-        <App />
+        <App initialState={initialState} />
       </StaticRouter>
     )
   )
@@ -66,7 +57,8 @@ app.get('/:keyword?', (req, res) => {
     Html({
       title: `Search repos${keyword ? `: ${keyword}` : ''}`,
       style: sheet.getStyleTags(),
-      body
+      body,
+      initialState
     })
   )
 })

@@ -1,4 +1,4 @@
-export const Html = ({ title, style, body }) => `
+export const Html = ({ title, style, body, initialState }) => `
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,6 +7,9 @@ export const Html = ({ title, style, body }) => `
     <meta name="description" content="Search GitHub repos." />
     <link rel="shortcut icon" href="data:;base64,iVBORw0KGgo=" />
     ${style}
+    <script>
+      window.__initialState__ = ${JSON.stringify(initialState)}
+    </script>
   </head>
   <body>
     <div id="app">${body}</div>
