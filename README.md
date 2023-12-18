@@ -84,3 +84,5 @@ https://drive.google.com/file/d/1_Yh9z2jmA6I74XL9jCyFrhGoiRVET0lF/view?usp=shari
 - CodeceptJS + Puppeteer (e2e test)
 - Storybook (manual test :stuck_out_tongue:)
 
+## Questions of the interview take-home assignment
+![image](https://github.com/x3388638/github-explorer/assets/8147952/f68aface-f420-4e83-87c2-a459f22aecfd)
